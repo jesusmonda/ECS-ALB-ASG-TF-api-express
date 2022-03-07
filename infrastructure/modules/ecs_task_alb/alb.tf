@@ -17,7 +17,7 @@ resource "aws_security_group" "alb" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0"] // Everyone
     ipv6_cidr_blocks = ["::/0"]
   }
 
@@ -35,23 +35,23 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_lb_target_group" "app" {
-  name     = "${var.project_name}-${var.environment}-task-${var.task_name}"
-  port     = 1 // no value matter
-  protocol = "HTTP"
-  target_type                   = "instance"
-  vpc_id   = var.vpc_id
+  name        = "${var.project_name}-${var.environment}-task-${var.task_name}"
+  port        = 1 // no value matter
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 
-    health_check {
-        enabled             = true
-        interval            = 10
-        matcher             = "200"
-        path                = var.health_path
-        port                = "traffic-port"
-        protocol            = "HTTP"
-        timeout             = 5
-        healthy_threshold   = 5
-        unhealthy_threshold = 2
-    }
+  health_check {
+    enabled             = true
+    interval            = 10
+    matcher             = "200"
+    path                = var.health_path
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = 5
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+  }
 }
 
 resource "aws_lb_listener" "app" {

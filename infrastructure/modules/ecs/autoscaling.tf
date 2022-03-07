@@ -1,19 +1,23 @@
 resource "aws_autoscaling_group" "scaling" {
-    capacity_rebalance        = true
-    default_cooldown          = 300
-    desired_capacity          = 1
-    max_size                  = 5
-    min_size                  = 1
+  capacity_rebalance = true
+  default_cooldown   = 300
+  desired_capacity   = 3
+  max_size           = 4
+  min_size           = 3 // High availability
 
-    health_check_grace_period = 0
-    health_check_type         = "EC2"
-  
-    launch_configuration      = aws_launch_configuration.scaling.id
-    load_balancers            = []
+  health_check_grace_period = 0
+  health_check_type         = "EC2"
 
-    name                      = "${var.project_name}-${var.environment}"
-    protect_from_scale_in     = false
-    vpc_zone_identifier       =  var.subnets_id
+  launch_template {
+    id      = aws_launch_template.nodes.id
+    version = "$Latest"
+  }
+
+  load_balancers = []
+
+  name                  = "${var.project_name}-${var.environment}"
+  protect_from_scale_in = false
+  vpc_zone_identifier   = var.subnets_id
 
   tag {
     key                 = "AmazonECSManaged"
@@ -21,15 +25,15 @@ resource "aws_autoscaling_group" "scaling" {
     propagate_at_launch = true
   }
 
-    tag {
-        key                 = "Name"
-        propagate_at_launch = true
-        value               = "${var.project_name}-${var.environment}"
-    }
+  tag {
+    key                 = "Name"
+    propagate_at_launch = true
+    value               = "${var.project_name}-${var.environment}-ecs-nodes"
+  }
 
-    lifecycle {
-        ignore_changes = [
-            desired_capacity
-        ]
-    }
+  lifecycle {
+    ignore_changes = [
+      desired_capacity
+    ]
+  }
 }

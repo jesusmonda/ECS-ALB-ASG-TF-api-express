@@ -1,43 +1,47 @@
 variable "environment" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "project_name" {
-    type = string
+  type = string
 }
 
 variable "execution_role_arn" {
-    type = string
+  type = string
 }
 
 variable "vpc_id" {
-    type = string
+  type = string
 }
 
 variable "subnets_id" {
-    type = list
+  type = list(any)
 }
 
 variable "ecs_cluster_arn" {
-    type = string
+  type = string
+}
+
+variable "ecs_cluster_name" {
+  type = string
 }
 
 variable "task_name" {
-    type = string
+  type = string
 }
 
 variable "container_name" {
-    type = string
+  type = string
 }
 
 variable "container_port" {
-    type = number
+  type = number
 }
 
 variable "health_path" {
-    type = string
+  type = string
 }

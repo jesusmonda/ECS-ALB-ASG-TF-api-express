@@ -7,12 +7,16 @@ resource "aws_iam_role_policy" "app" {
     Version = "2012-10-17"
     Statement = [
       {
-            "Effect": "Allow",
-            "Action": [
-                "lambda:invoke",
-            ],
-            "Resource": "*"
-        },
+        "Effect" : "Allow",
+        "Action" : [
+          "lambda:invoke",
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel"
+        ],
+        "Resource" : "*"
+      },
     ]
   })
 }

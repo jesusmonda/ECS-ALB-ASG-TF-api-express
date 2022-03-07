@@ -1,0 +1,40 @@
+{
+    "family": "$PROJECT_NAME-$ENVIRONMENT-$APP_NAME",
+    "taskRoleArn": "arn:aws:iam::132010533830:role/$PROJECT_NAME-$ENVIRONMENT-ecs-task-$APP_NAME-role",
+    "executionRoleArn": "arn:aws:iam::132010533830:role/$PROJECT_NAME-$ENVIRONMENT-ecs-task-execution-role",
+    "networkMode": "awsvpc",
+    "containerDefinitions": [
+        {
+            "environment"       : [],
+            "essential"         : true,
+            "name"              : "app",
+            "image"             : "$IMAGE",
+            "linuxParameters" : {
+                "initProcessEnabled" : true
+            },
+            "logConfiguration"  : {
+                "logDriver" : "awslogs",
+                "options"   : {
+                    "awslogs-group"         : "/ecs/$PROJECT_NAME-$ENVIRONMENT-ecs-task-$APP_NAME",
+                    "awslogs-region"        : "$REGION",
+                    "awslogs-stream-prefix" : "ecs"
+                }
+            },
+            "memory"            : 200,
+            "memoryReservation" : 100,
+            "portMappings"      : [
+                {
+                    "containerPort" : 3000,
+                    "protocol"      : "tcp"
+                }
+            ],
+            "ulimits": [
+                {
+                  "name": "cpu",
+                  "softLimit": 100,
+                  "hardLimit": 200
+                }
+              ]
+        }
+    ]
+    }

@@ -1,25 +1,27 @@
 variable "environment" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "project_name" {
-    type = string
+  type = string
 }
 
 variable "zones" {
-    type = list
+  type = list(any)
 }
 
 variable "vpc_id" {
-    type = string
+  type = string
 }
 
 variable "subnets_id" {
-    type = list
+  type = list(any)
 }
 
-variable "alb_sg_id" {}
+variable "alb_sg_ids" {
+  type = list(any)
+}
